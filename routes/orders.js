@@ -1,6 +1,6 @@
 var express = require('express');
 var router = express.Router();
-var Order = require('../models/orders')
+var Order = require('../models/orders');
 
 /* GET home page. */
 router.get('/', async function (req, res) {
@@ -19,6 +19,7 @@ router.get('/', async function (req, res) {
     }
 });
 
+// Find Order by ID
 router.get('/:id', async function (req, res) {
     try {
         let id = req.params.id;
@@ -36,6 +37,7 @@ router.get('/:id', async function (req, res) {
     }
 });
 
+//Add New Order
 router.post('/add', async function (req, res) {
     try {
         const newOrder = await Order.create(req.body);
@@ -53,6 +55,8 @@ router.post('/add', async function (req, res) {
     }
 });
 
+
+//update order
 router.put('/update/:id', async function (req, res) {
     try {
         const order = await Order.findByIdAndUpdate(req.params.id, req.body, {
@@ -73,6 +77,8 @@ router.put('/update/:id', async function (req, res) {
     }
 });
 
+
+//delete order
 router.delete('/delete/:id', async function (req, res) {
     try {
         await Order.findByIdAndDelete(req.params.id);
