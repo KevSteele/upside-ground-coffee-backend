@@ -15,7 +15,7 @@ const bcrypt = require("bcryptjs");
 // });
 
 
-router.post('/register', async (req, res) => {
+router.post('/signup', async (req, res) => {
 
     //VALIDATE DATA BEFORE CREATING USER
     const {error} = registerValidation(req.body);
@@ -39,12 +39,15 @@ router.post('/register', async (req, res) => {
         fullname: req.body.fullname,
         // username: req.body.username
     });
+
     try {
         const savedUser = await user.save();
         res.send({user: user.email});
     } catch (err) {
-        res.status(400).send(err);
+        console.log(err)
+        res.status(400).send({message: "Try again! Error creating user."});
     }
+
 });
 
 

@@ -20,6 +20,7 @@ mongoose.connect(process.env.DB_Connect, { useCreateIndex: true, useNewUrlParser
 var indexRouter = require('./routes/index');
 var authRouter = require('./routes/auth');
 var ordersRouter = require('./routes/orders');
+// var errorController = require('./controllers/errorController');
 
 //Middlewares
 app.use(logger('dev'));
@@ -35,10 +36,17 @@ app.use('/', indexRouter);
 app.use('/user', authRouter);
 app.use('/orders', ordersRouter);
 
+app.use((err, req, res, next) => {
+    console.log('congrats you hit the error middleware');
+    console.log(err);
+});
+
 const db = mongoose.connection;
 db.on('error', console.error.bind(console, 'connection error:'));
 db.once('open', function() {
     console.log("We're in!")
 });
+
+// app.use(errorController);
 
 module.exports = app;

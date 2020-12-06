@@ -2,9 +2,11 @@
 var express = require('express');
 var router = express.Router();
 var Order = require('../models/orders');
+const verify = require('./verifyToken');
+
 
 /* GET home page. */
-router.get('/', async function (req, res) {
+router.get('/', verify, async function (req, res) {
     try {
         const orders = await Order.find();
         res.status(200).json({
@@ -20,8 +22,9 @@ router.get('/', async function (req, res) {
     }
 });
 
+
 // Find Order by ID
-router.get('/:id', async function (req, res) {
+router.get('/:id', verify, async function (req, res) {
     try {
         let id = req.params.id;
         const order = await Order.findById(id);
@@ -38,8 +41,9 @@ router.get('/:id', async function (req, res) {
     }
 });
 
+
 //Add New Order
-router.post('/add', async function (req, res) {
+router.post('/add', verify, async function (req, res) {
     try {
         const newOrder = await Order.create(req.body);
         res.status(201).json({
@@ -58,7 +62,7 @@ router.post('/add', async function (req, res) {
 
 
 //update order
-router.put('/update/:id', async function (req, res) {
+router.put('/update/:id', verify, async function (req, res) {
     try {
         const order = await Order.findByIdAndUpdate(req.params.id, req.body, {
             new: true,
@@ -80,7 +84,7 @@ router.put('/update/:id', async function (req, res) {
 
 
 //delete order
-router.delete('/delete/:id', async function (req, res) {
+router.delete('/delete/:id', verify, async function (req, res) {
     try {
         await Order.findByIdAndDelete(req.params.id);
         res.status(204).json({
@@ -94,7 +98,6 @@ router.delete('/delete/:id', async function (req, res) {
         });
     }
 });
-
 
 
 module.exports = router;
